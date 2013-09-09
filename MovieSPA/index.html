@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Movies SPA</title>
+  <link href="Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>Movies 
+    <small><span data-bind="text: genre"></span></small></h1>
+    </div>
+
+    <div class="row">
+      <div class="span2">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <ul class="nav nav-pills nav-stacked" data-bind="foreach: genres">
+              <li><a href="#" data-bind="click: $parent.getByGenre"><span data-bind="  text: $data"></span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="span8">
+        <div>
+          <table class="table table-bordered table-condensed" data-bind="visible: movies().length > 0">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Year</th>
+                <th>Rating</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody data-bind="foreach: movies">
+            <tr>
+              <!-- ko if: editing -->
+              <td><input data-bind="value: Title" /></td>
+              <td><input type="number" class="input-small" data-bind="value: Year" /></td>
+              <td><select class="input-small" data-bind="options: $parent.ratings, value: Rating"></select></td>
+              <td>
+                <button class="btn" data-bind="click: $parent.save">Save</button>
+                <button class="btn" data-bind="click: $parent.cancel">Cancel</button>
+              </td>
+              <!-- /ko -->
+
+              <!-- ko ifnot: editing -->
+              <td><span data-bind="text: Title"></span></td>
+              <td><span data-bind="text: Year"></span></td>
+              <td><span data-bind="text: Rating"></span></td>
+              <td><button class="btn" data-bind="click: $parent.edit">Edit</button></td>
+              <!-- /ko -->
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p data-bind="visible: error, text: error" class="text-error"></p>
+        <p class="text-info" data-bind="visible: !error() && movies().length == 0">No records found.</p>
+      </div>
+    </div>
+  </div>
+  <script src="Scripts/jquery-2.0.3.js"></script>
+  <script src="Scripts/knockout-2.3.0.debug.js"></script>
+  <script src="Scripts/app.service.js"></script>
+  <script src="Scripts/app.js"></script>
+</body>
+</html>
