@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+
+  <script type="text/x-handlebars" data-template-name="application">
+    <div class="container">
+      <div class="page-header">
+        <h1>Movies</h1>
+      </div>
+      <div class="well">
+      <div class="navbar navbar-static-top">
+          <div class="navbar-inner">
+              <ul class="nav nav-tabs">
+                  <li>{{#linkTo 'genres'}}Genres{{/linkTo}} </li>
+                  <li>{{#linkTo 'about'}}About{{/linkTo}} </li>
+              </ul>
+          </div>
+      </div>
+        </div>
+            <div class="container">
+                <div class="row">
+                    {{outlet}}
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <p>&copy;2013 Mike Wasson</p>
+        </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="about">
+      <div class="container"></div>
+        <h3>About this app...</h3>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="genres">
+      <div class="span2">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <ul class="nav nav-stacked">
+                {{#each item in model}}
+                <li>{{#linkTo 'genres.movies' item}}{{item.name}}{{/linkTo}}</li>
+                {{/each}}
+            </ul>
+          </div>
+        </div>    
+    </div>
+        <div class="span8">
+        {{outlet}}
+        </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="genres/movies">
+            {{partial "movies"}}
+    </script>
+
+
+    <script type="text/x-handlebars" data-template-name="_movies">
+        {{#if model}}
+        <table class="table table-bordered table-condensed" >
+            <thead>
+                <tr><th>Title</th><th>Year</th><th>Rating</th><th></th></tr>
+            </thead>
+            <tbody>
+            {{#each movie in model itemController="movie"}}
+                <tr>
+                    {{#if movie.isEditing}}
+
+                    <td>{{input type="text" value=movie.Title }}</td>
+                    <td>{{input type="text" class="input-small" value=movie.Year}}</td>
+                    <td>{{view Ember.Select class="input-small" contentBinding="App.MovieController.ratings" valueBinding="movie.Rating"}}</td>
+                    <td>
+                        <button class="btn" {{action 'save'}}>Save</button>
+                        <button class="btn" {{action 'cancel'}}>Cancel</button>
+                    </td>
+
+                    {{else}}
+
+                    <td>{{movie.Title}}</td>
+                    <td>{{movie.Year}}</td>
+                    <td>{{movie.Rating}}</td>
+                    <td>
+                        <button class="btn" {{action 'edit'}}>Edit</button>
+                    </td>
+                    {{/if}}
+                    </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <p>No matches.</p>
+        {{/if}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="error">
+      <h1>Error</h1>
+      <h2>{{status}}.. {{statusText}}</h2>
+    </script>
+
+    <script src="Scripts/jquery-2.0.3.js"></script>
+    <script src="Scripts/handlebars-1.0.0.js"></script>
+    <script src="Scripts/ember.js"></script>
+    <script src="Scripts/ember-data.js"></script>
+    <script src="Scripts/app/application.js"></script>
+    <script src="Scripts/app/models.js"></script>
+    <script src="Scripts/app/routes.js"></script>
+    <script src="Scripts/app/controllers.js"></script>
+</body>
+</html>
